@@ -1,0 +1,867 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeCraftHub: Your Learning Management Platform</title>
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --primary: #8B5CF6;
+        --primary-dark: #7C3AED;
+        --primary-light: #A78BFA;
+        --primary-bg: #EDE9FE;
+        --success: #F59E0B;
+        --success-dark: #D97706;
+        --success-bg: #FEF3C7;
+        --danger: #EF4444;
+        --danger-dark: #DC2626;
+        --danger-bg: #FEE2E2;
+        --bg: #F8F7FC;
+        --surface: #FFFFFF;
+        --text: #1E1B4B;
+        --text-secondary: #6B7280;
+        --text-muted: #9CA3AF;
+        --border: #E5E7EB;
+        --border-focus: #8B5CF6;
+        --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+        --shadow-lg: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.04);
+        --radius: 8px;
+        --radius-lg: 12px;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: #fff;
+        padding: 2rem 1.5rem;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .header p {
+        margin-top: 0.35rem;
+        font-size: 0.95rem;
+        opacity: 0.85;
+      }
+
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 1.5rem;
+      }
+
+      /* Form Section */
+      .form-section {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-section h2 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .form-section h2 .icon {
+        font-size: 1.25rem;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-group label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 0.6rem 0.75rem;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: var(--text);
+        background: #FAFAFE;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        border-color: var(--border-focus);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+      }
+
+      .form-group input.invalid,
+      .form-group textarea.invalid,
+      .form-group select.invalid {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 72px;
+      }
+
+      .form-actions {
+        margin-top: 1rem;
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.55rem 1.2rem;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+        white-space: nowrap;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #8B5CF6;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-dark);
+        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: #F59E0B;
+      }
+
+      .btn-success:hover:not(:disabled) {
+        background: var(--success-dark);
+      }
+
+      .btn-danger {
+        background: var(--danger);
+        color: #fff;
+      }
+
+      .btn-danger:hover:not(:disabled) {
+        background: var(--danger-dark);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1.5px solid var(--border);
+      }
+
+      .btn-ghost:hover:not(:disabled) {
+        background: var(--bg);
+        border-color: var(--text-muted);
+      }
+
+      .btn-sm {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+      }
+
+      /* Course List */
+      .list-section {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+      }
+
+      .list-section h2 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Status Badges */
+      .badge {
+        display: inline-block;
+        padding: 0.2rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .badge-not-started {
+        background: #F3F4F6;
+        color: #4B5563;
+      }
+
+      .badge-in-progress {
+        background: var(--primary-bg);
+        color: var(--primary-dark);
+      }
+
+      .badge-completed {
+        background: var(--success-bg);
+        color: #92400E;
+      }
+
+      /* Course Cards */
+      .course-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .course-card {
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1rem 1.25rem;
+        transition: box-shadow 0.2s, border-color 0.2s;
+      }
+
+      .course-card:hover {
+        border-color: var(--primary-light);
+        box-shadow: var(--shadow);
+      }
+
+      .course-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .course-card-header h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.3;
+      }
+
+      .course-card-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .course-card-body p {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        line-height: 1.5;
+      }
+
+      .course-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .course-card-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+
+      /* Modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(30, 27, 75, 0.4);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal {
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 520px;
+        animation: modalIn 0.2s ease-out;
+      }
+
+      @keyframes modalIn {
+        from { opacity: 0; transform: translateY(12px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      .modal h2 {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 1rem;
+      }
+
+      .modal .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal .form-actions {
+        margin-top: 1.25rem;
+      }
+
+      /* Loading Spinner */
+      .spinner-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+      }
+
+      .spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid var(--border);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Toast Messages */
+      .toast-container {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        pointer-events: none;
+      }
+
+      .toast {
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #fff;
+        box-shadow: var(--shadow-lg);
+        animation: toastIn 0.3s ease-out, toastOut 0.3s ease-in 2.7s forwards;
+        pointer-events: auto;
+      }
+
+      .toast-success {
+        background: #059669;
+      }
+
+      .toast-error {
+        background: var(--danger);
+      }
+
+      @keyframes toastIn {
+        from { opacity: 0; transform: translateX(40px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+
+      @keyframes toastOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+      }
+
+      .empty-state .icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      .empty-state p {
+        font-size: 0.95rem;
+      }
+
+      /* Inline error */
+      .field-error {
+        color: var(--danger);
+        font-size: 0.78rem;
+        margin-top: 0.2rem;
+        min-height: 1.1em;
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .course-card-header {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .course-card-actions {
+          align-self: flex-end;
+        }
+
+        .header h1 {
+          font-size: 1.35rem;
+        }
+
+        .container {
+          padding: 1rem;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .form-actions .btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>CodeCraftHub: Your Learning Management Platform</h1>
+      <p>Track, manage, and complete your learning goals</p>
+    </header>
+
+    <div class="container">
+      <!-- Add Course Form -->
+      <section class="form-section">
+        <h2><span class="icon">+</span> Add New Course</h2>
+        <form id="addCourseForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="addName">Course Name *</label>
+              <input type="text" id="addName" placeholder="e.g. Advanced JavaScript" required />
+              <span class="field-error" id="addNameError"></span>
+            </div>
+            <div class="form-group">
+              <label for="addTargetDate">Target Date *</label>
+              <input type="date" id="addTargetDate" required />
+              <span class="field-error" id="addTargetDateError"></span>
+            </div>
+            <div class="form-group full-width">
+              <label for="addDescription">Description *</label>
+              <textarea id="addDescription" placeholder="Brief description of the course..." required></textarea>
+              <span class="field-error" id="addDescriptionError"></span>
+            </div>
+            <div class="form-group">
+              <label for="addStatus">Status *</label>
+              <select id="addStatus" required>
+                <option value="">Select status</option>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+              <span class="field-error" id="addStatusError"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="reset" class="btn btn-ghost">Clear</button>
+            <button type="submit" class="btn btn-primary" id="addSubmitBtn">Add Course</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Course List -->
+      <section class="list-section">
+        <h2>Your Courses</h2>
+        <div id="courseList"></div>
+      </section>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal">
+      <div class="modal">
+        <h2>Edit Course</h2>
+        <form id="editCourseForm" novalidate>
+          <input type="hidden" id="editId" />
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="editName">Course Name *</label>
+              <input type="text" id="editName" required />
+              <span class="field-error" id="editNameError"></span>
+            </div>
+            <div class="form-group">
+              <label for="editTargetDate">Target Date *</label>
+              <input type="date" id="editTargetDate" required />
+              <span class="field-error" id="editTargetDateError"></span>
+            </div>
+            <div class="form-group">
+              <label for="editDescription">Description *</label>
+              <textarea id="editDescription" required></textarea>
+              <span class="field-error" id="editDescriptionError"></span>
+            </div>
+            <div class="form-group">
+              <label for="editStatus">Status *</label>
+              <select id="editStatus" required>
+                <option value="">Select status</option>
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+              <span class="field-error" id="editStatusError"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="editCancelBtn">Cancel</button>
+            <button type="submit" class="btn btn-success" id="editSubmitBtn">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+  
+    const API_BASE = 'https://durmallikath-8080.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/api/courses';
+
+      
+
+      // --- Helpers ---
+      function $(sel) { return document.querySelector(sel); }
+      function $$(sel) { return document.querySelectorAll(sel); }
+
+      function showToast(message, type = 'success') {
+        const container = $('#toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return '—';
+        const d = new Date(dateStr);
+        if (isNaN(d.getTime())) return dateStr;
+        return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      function statusBadgeClass(status) {
+        const map = {
+          'Not Started': 'badge-not-started',
+          'In Progress': 'badge-in-progress',
+          'Completed': 'badge-completed',
+        };
+        return map[status] || 'badge-not-started';
+      }
+
+      function setLoading(container, show) {
+        if (show) {
+          container.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+        }
+      }
+
+      // --- Validation ---
+      function validateField(inputId, errorId) {
+        const input = $(inputId);
+        const error = $(errorId);
+        const value = input.value.trim();
+        if (!value) {
+          input.classList.add('invalid');
+          error.textContent = 'This field is required';
+          return false;
+        }
+        input.classList.remove('invalid');
+        error.textContent = '';
+        return true;
+      }
+
+      function clearValidation(prefix) {
+        const fields = prefix === 'add'
+          ? ['addName', 'addDescription', 'addTargetDate', 'addStatus']
+          : ['editName', 'editDescription', 'editTargetDate', 'editStatus'];
+        fields.forEach(id => {
+          $(id).classList.remove('invalid');
+          $(id + 'Error').textContent = '';
+        });
+      }
+
+      function validateForm(prefix) {
+        const fields = prefix === 'add'
+          ? [['#addName', '#addNameError'], ['#addDescription', '#addDescriptionError'], ['#addTargetDate', '#addTargetDateError'], ['#addStatus', '#addStatusError']]
+          : [['#editName', '#editNameError'], ['#editDescription', '#editDescriptionError'], ['#editTargetDate', '#editTargetDateError'], ['#editStatus', '#editStatusError']];
+        let valid = true;
+        fields.forEach(([inputId, errorId]) => {
+          if (!validateField(inputId, errorId)) valid = false;
+        });
+        return valid;
+      }
+
+      // --- API ---
+      async function apiCall(url, options = {}) {
+        const headers = { 'Content-Type': 'application/json' };
+        const res = await fetch(url, { ...options, headers: { ...headers, ...options.headers } });
+        if (!res.ok) {
+          let errMsg = `Request failed (${res.status})`;
+          try {
+            const body = await res.json();
+            errMsg = body.message || body.error || errMsg;
+          } catch {}
+          throw new Error(errMsg);
+        }
+        if (res.status === 204) return null;
+        return res.json();
+      }
+
+      // --- Render ---
+      function renderCourses(courses) {
+        const container = $('#courseList');
+        if (!courses || courses.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <span class="icon">&#128218;</span>
+              <p>No courses yet. Add your first course above!</p>
+            </div>`;
+          return;
+        }
+        container.innerHTML = '<div class="course-cards">' + courses.map(c => `
+          <div class="course-card" data-id="${c.id}">
+            <div class="course-card-header">
+              <h3>${escapeHtml(c.name)}</h3>
+              <div class="course-card-actions">
+                <button class="btn btn-ghost btn-sm edit-btn" data-id="${c.id}">Edit</button>
+                <button class="btn btn-danger btn-sm delete-btn" data-id="${c.id}">Remove</button>
+              </div>
+            </div>
+            <div class="course-card-body">
+              <p>${escapeHtml(c.description)}</p>
+            </div>
+            <div class="course-card-meta">
+              <span>Target: ${formatDate(c.target_date)}</span>
+              <span>Created: ${formatDate(c.created_at)}</span>
+              <span class="badge ${statusBadgeClass(c.status)}">${escapeHtml(c.status)}</span>
+            </div>
+          </div>
+        `).join('') + '</div>';
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      // --- Load courses ---
+      async function loadCourses() {
+        const container = $('#courseList');
+        setLoading(container, true);
+        try {
+          const courses = await apiCall(API_BASE);
+          renderCourses(courses);
+        } catch (err) {
+          container.innerHTML = `<div class="empty-state"><p>Failed to load courses: ${escapeHtml(err.message)}</p></div>`;
+        }
+      }
+
+      // --- Add course ---
+      $('#addCourseForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearValidation('add');
+        if (!validateForm('add')) return;
+
+        const btn = $('#addSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Adding...';
+
+        try {
+          await apiCall(API_BASE, {
+            method: 'POST',
+            body: JSON.stringify({
+              name: $('#addName').value.trim(),
+              description: $('#addDescription').value.trim(),
+              target_date: $('#addTargetDate').value,
+              status: $('#addStatus').value,
+            }),
+          });
+          showToast('Course added successfully!');
+          $('#addCourseForm').reset();
+          await loadCourses();
+        } catch (err) {
+          showToast(err.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Add Course';
+        }
+      });
+
+      // --- Edit course (modal) ---
+      function openEditModal(course) {
+        $('#editId').value = course.id;
+        $('#editName').value = course.name || '';
+        $('#editDescription').value = course.description || '';
+        $('#editTargetDate').value = course.target_date || '';
+        $('#editStatus').value = course.status || '';
+        clearValidation('edit');
+        $('#editModal').classList.add('active');
+      }
+
+      function closeEditModal() {
+        $('#editModal').classList.remove('active');
+      }
+
+      $('#editCancelBtn').addEventListener('click', closeEditModal);
+      $('#editModal').addEventListener('click', (e) => {
+        if (e.target === $('#editModal')) closeEditModal();
+      });
+
+      $('#editCourseForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearValidation('edit');
+        if (!validateForm('edit')) return;
+
+        const btn = $('#editSubmitBtn');
+        const id = $('#editId').value;
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
+
+        try {
+          await apiCall(`${API_BASE}/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+              name: $('#editName').value.trim(),
+              description: $('#editDescription').value.trim(),
+              target_date: $('#editTargetDate').value,
+              status: $('#editStatus').value,
+            }),
+          });
+          showToast('Course updated successfully!');
+          closeEditModal();
+          await loadCourses();
+        } catch (err) {
+          showToast(err.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Save Changes';
+        }
+      });
+
+      // --- Delete course ---
+      async function deleteCourse(id) {
+        if (!confirm('Are you sure you want to remove this course?')) return;
+        try {
+          await apiCall(`${API_BASE}/${id}`, { method: 'DELETE' });
+          showToast('Course removed.');
+          await loadCourses();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      // --- Delegated event listeners for edit/delete buttons ---
+      $('#courseList').addEventListener('click', async (e) => {
+        const editBtn = e.target.closest('.edit-btn');
+        const deleteBtn = e.target.closest('.delete-btn');
+
+        if (editBtn) {
+          const id = editBtn.dataset.id;
+          try {
+            const courses = await apiCall(API_BASE);
+            const course = courses.find(c => String(c.id) === String(id));
+            if (course) openEditModal(course);
+            else showToast('Course not found', 'error');
+          } catch (err) {
+            showToast(err.message, 'error');
+          }
+        }
+
+        if (deleteBtn) {
+          deleteCourse(deleteBtn.dataset.id);
+        }
+      });
+
+      // --- Keyboard: close modal on Escape ---
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeEditModal();
+      });
+
+      // --- Init ---
+      loadCourses();
+    </script>
+  </body>
+</html>
